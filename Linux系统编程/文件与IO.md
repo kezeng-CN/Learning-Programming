@@ -2,7 +2,7 @@
 
 ## 错误处理
 
-系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在<errno.h>头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
+系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
 
 ```cpp
 #include <errno.h>
@@ -55,7 +55,7 @@ ANSI C提供的标准I/O库(带缓冲区)
 * 设备或文件的操作通过文件描述符进行
 * 内核记录文件信息返回文件描述符(非负整数)
 
-进程启动默认的3个文件描述符常量定义在<unistd.h>头文件中
+进程启动默认的3个文件描述符常量定义在`<unistd.h>`头文件中
 
 1. STDIN_FILENO
 2. STDOUT_FILENO
