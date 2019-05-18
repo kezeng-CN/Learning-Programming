@@ -27,7 +27,7 @@ int main(void)
 运行结果如下
 
 ```bash
- ./a.out 
+$ ./a.out 
 close error: Bad file descriptor
 close error with msg:Bad file descriptor
 ```
