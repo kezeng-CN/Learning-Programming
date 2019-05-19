@@ -170,6 +170,26 @@ total 48
 
 最开始的权限由文件创建掩码决定,每次注册进入系统umask命令都被执行并自动设置掩码改变默认值,新的权限会把旧的覆盖
 
+| S_IRWXU         |0000700         |[XSI] RWX mask for owner |
+| S_IRUSR         |0000400         |[XSI] R for owner */
+| S_IWUSR         |0000200         |[XSI] W for owner |
+| S_IXUSR         |0000100         |[XSI] X for owner |
+| S_IRWXG         |0000070         |[XSI] RWX mask for group |
+| S_IRGRP         |0000040         |[XSI] R for group */
+| S_IWGRP         |0000020         |[XSI] W for group |
+| S_IXGRP         |0000010         |[XSI] X for group |
+| S_IRWXO         |0000007         |[XSI] RWX mask for other |
+| S_IROTH         |0000004         |[XSI] R for other */
+| S_IWOTH         |0000002         |[XSI] W for other |
+| S_IXOTH         |0000001         |[XSI] X for other |
+| S_ISUID         |0004000         |[XSI] set user id on execution |
+| S_ISGID         |0002000         |[XSI] set group id on execution |
+| S_ISVTX         |0001000         |[XSI] directory restrcted delete |
+| S_ISTXT         |S_ISVTX         |sticky bit: not supported |
+| S_IREAD         |S_IRUSR         |backward compatability |
+| S_IWRITE        |S_IWUSR         |backward compatability |
+| S_IEXEC         |S_IXUSR         |backward compatability |
+
 ## 错误处理
 
 系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
