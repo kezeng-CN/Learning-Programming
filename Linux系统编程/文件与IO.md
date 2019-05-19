@@ -111,6 +111,12 @@ open第二参数
 | O\_RDWR | 0x0002 | 可读写 |
 | O\_ACCMODE | 0x0003 | 访问模式 |
 
+#define O_APPEND        0x0008          /* set append mode */
+#define O_CREAT         0x0200          /* create if nonexistant */
+#define O_EXCL          0x0800          /* error if already exists */
+#define O_TRUNC         0x0400          /* truncate to zero length */
+
+
 ## 错误处理
 
 系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
