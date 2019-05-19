@@ -104,9 +104,20 @@ open error: No such file or directory
 
 open第二参数
 
+O\_RDONLY        0x0000          /\* open for reading only \*/
+
+O\_WRONLY        0x0001          /\* open for writing only \*/
+
+O\_RDWR          0x0002          /\* open for reading and writing \*/
+
+O\_ACCMODE       0x0003          /\* mask for above modes \*/
+
 | 定义 | 值 | 操作 |
 | :--- | :--- | :--- |
-| O\_RDONLY |  |  |
+| O\_RDONLY | 0x0000 | 仅读 |
+| O\_WRONLY | 0x0001 | 仅写 |
+| O\_RDWR | 0x0002 | 可读写 |
+| O\_ACCMODE | 0x0003 | 访问模式 |
 
 ## 错误处理
 
