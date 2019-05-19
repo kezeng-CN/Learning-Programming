@@ -182,7 +182,7 @@ total 48
 | S\_IWGRP         |0000020         |\[XSI\] W for group |  
 | S\_IXGRP         |0000010         |\[XSI\] X for group |  
 | S\_IRWXO         |0000007         |\[XSI\] RWX mask for other |  
-| S\_IROTH         |0000004         |\[XSI\] R for other \*/  
+| S\_IROTH         |0000004         |\[XSI\] R for other /  
 | S\_IWOTH         |0000002         |\[XSI\] W for other |  
 | S\_IXOTH         |0000001         |\[XSI\] X for other |  
 | S\_ISUID         |0004000         |\[XSI\] set user id on execution |  
