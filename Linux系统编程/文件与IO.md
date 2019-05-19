@@ -345,10 +345,10 @@ Linux系统中有一个文件偏移的机制,将当前文件偏移值改变到�
 
 * fd文件描述符
 * offset偏移量
-* 搜索起始位置
+* base搜索起始位置
 * 返回新的文件偏移值
 
-#### base表示搜索的起始位置
+base表示搜索的起始位置
 
 | base | 文件位置 |
 | :--- | :--- |
@@ -356,5 +356,115 @@ Linux系统中有一个文件偏移的机制,将当前文件偏移值改变到�
 | SEEK\_CUR | 1 set file offset to current plus offset |
 | SEEK\_END | 2 set file offset to EOF plus offset |
 
+`lseek`对应于c语言的`fseek`返回当前偏移量
 
+```cpp
+#include <errno.h> // errno
+#include <fcntl.h> // open
+#include <stdio.h>
+#include <stdlib.h>    // exit
+#include <string.h>    // strerror
+#include <sys/stat.h>  // open
+#include <sys/types.h> // open
+#include <unistd.h>    // I/O原语 read write close
+#define ERR_EXIT(m)         \
+    do                      \
+    {                       \
+        perror(m);          \
+        exit(EXIT_FAILURE); \
+    } while (0)
+int main(int args, char *argv[])
+{
+    int fd;
+    fd = open("test", O_RDONLY);
+    if (fd == -1)
+    {
+        ERR_EXIT("open error");
+    }
+    char buf[1024] = {0};
+    // 读取5个字节
+    int ret = read(fd, buf, 5);
+    if (ret == -1)
+    {
+        ERR_EXIT("read error");
+    }
+    printf("buf=%s\n", buf);
+    // 由于读取5个字节偏移量应为5
+    ret = lseek(fd, 0, SEEK_CUR);
+    if (ret == -1)
+    {
+        ERR_EXIT("lseek error");
+    }
+    printf("current offset=%d\n", ret);
+    return 0;
+}
+```
 
+执行结果如下
+
+```bash
+$ ./a.out 
+buf=hello
+current offset=5
+```
+
+利用`lseek`产生空洞文件,UNIX文件操作中文件位移量可以大于文件长度,下一次写入将根据文件位移量继续写入
+
+```cpp
+#include <errno.h> // errno
+#include <fcntl.h> // open
+#include <stdio.h>
+#include <stdlib.h>    // exit
+#include <string.h>    // strerror
+#include <sys/stat.h>  // open
+#include <sys/types.h> // open
+#include <unistd.h>    // I/O原语 read write close
+#define ERR_EXIT(m)         \
+    do                      \
+    {                       \
+        perror(m);          \
+        exit(EXIT_FAILURE); \
+    } while (0)
+int main(int args, char *argv[])
+{
+    int fd;
+    fd = open("test", O_WRONLY | O_CREAT | O_TRUNC);
+    if (fd == -1)
+    {
+        ERR_EXIT("open error");
+    }
+    int ret = write(fd, "hello", 5);
+    if (ret == -1)
+    {
+        ERR_EXIT("read error");
+    }
+    ret = lseek(fd, 32, SEEK_CUR);
+    if (ret == -1)
+    {
+        ERR_EXIT("lseek error");
+    }
+    write(fd, "world", 5);
+    close(fd);
+    return 0;
+}
+```
+
+执行结果如下
+
+```bash
+$ ./a.out 
+$ ls -l
+total 56
+-rwxr-xr-x  1 cengke  staff  8648 May 19 21:13 a.out
+-rw-r--r--@ 1 cengke  staff   839 May 19 21:12 main.c
+-rw-r--r--  1 cengke  staff    42 May 19 21:13 test
+$ od -c test 
+0000000    h   e   l   l   o  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
+0000020   \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
+0000040   \0  \0  \0  \0  \0   w   o   r   l   d                        
+0000052
+```
+
+文件包含32字节空洞字符,没有被实际写入文件的所有字节由重复的`\0`表示,空洞是否占磁盘空间由文件系统(file system)决定
+
+## 目录访问
