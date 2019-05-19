@@ -24,11 +24,35 @@
   * STDOUT\_FILENO 1 // 标准输出
   * STDERR\_FILENO 2 // 标准错误
 
+ANSI C定义的是文件指针,系统调用的文件描述符是非负整数
+
 | 系统调用 | ANSI C |
 | :--- | :--- |
 | STDIN\_FILENO | stdin |
 | STDOUT\_FILENO | stdout |
 | STDERR\_FILENO | stderror |
+
+文件指针和文件描述符可以互相转换
+
+```cpp
+#include <stdio.h>
+int main(void)
+{
+    int outfd = fileno(stdout);
+    printf("fileno(stdout) = %d\n", outfd);
+    FILE *fp = fdopen(outfd, "w+");
+    fprintf(fp, "hello world\n");
+    return 0;
+}
+```
+
+程序运行结果如下
+
+```bash
+$ ./a.out 
+fileno(stdout) = 1
+hello world
+```
 
 ## 错误处理
 
