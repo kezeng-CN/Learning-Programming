@@ -85,7 +85,7 @@ hello world
     } while (0)
 int main(void)
 {
-    int fd = open("test.txt", O_RDONLY);
+    int fd = open("test", O_RDONLY);
     if (fd == -1)
     {
         ERR_EXIT("open error");
@@ -116,6 +116,59 @@ open第二参数定义在`fcntl.h`中
 | O\_TRUNC | 0x0400 | 清空文件 |
 
 #### 函数原型 `int open(const char *path, int flags, mode_t mode)`
+
+* path 文件名称,可以包括绝对/相对路径
+* flags 文件打开模式
+* mode 访问权限
+* 执行成功返回文件描述符,失败返回-1
+
+相较于第一种`open`,多了权限参数
+
+```cpp
+#include <errno.h> // errno
+#include <fcntl.h> // open
+#include <stdio.h>
+#include <stdlib.h>    // exit
+#include <string.h>    // strerror
+#include <sys/stat.h>  // open
+#include <sys/types.h> // open
+#include <unistd.h>    // I/O原语 read write close
+#define ERR_EXIT(m)         \
+    do                      \
+    {                       \
+        perror(m);          \
+        exit(EXIT_FAILURE); \
+    } while (0)
+int main(void)
+{
+    int fd = open("test", O_RDONLY | O_CREAT, 0666);
+    if (fd == -1)
+    {
+        ERR_EXIT("open error");
+    }
+    printf("open succ\n");
+    return 0;
+}
+```
+
+执行结果如下
+```bash
+$ ./a.out 
+open succ
+$ ls -l
+total 48
+-rwxr-xr-x  1 user  staff  8568 May 19 15:48 a.out
+-rw-r--r--@ 1 user  staff   595 May 19 15:48 main.c
+-rw-r--r--  1 user  staff     0 May 19 15:48 test
+```
+
+得到的文件权限为`-rw-r--r--`,对应0644,跟给定的0666不一致
+
+##### umask
+
+命令格式`umask [选项][掩码]`
+
+最开始的权限由文件创建掩码决定,每次注册进入系统umask命令都被执行并自动设置掩码改变默认值,新的权限会把旧的覆盖
 
 ## 错误处理
 
