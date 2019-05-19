@@ -17,7 +17,14 @@
 
 ## 错误处理
 
-系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
+系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`off_t lseek(int fd, off_t offset, int base);`是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
+* fd文件描述符
+* offset偏移量
+* 搜索起始位置
+* 返回新的文件偏移值
+
+#### base表示搜索的起始位置
+
 
 ```cpp
 #include <errno.h>
@@ -263,5 +270,84 @@ total 48
 简单的拷贝
 
 ```cpp
-
+#include <errno.h> // errno
+#include <fcntl.h> // open
+#include <stdio.h>
+#include <stdlib.h>    // exit
+#include <string.h>    // strerror
+#include <sys/stat.h>  // open
+#include <sys/types.h> // open
+#include <unistd.h>    // I/O原语 read write close
+#define ERR_EXIT(m)         \
+    do                      \
+    {                       \
+        perror(m);          \
+        exit(EXIT_FAILURE); \
+    } while (0)
+int main(int args, char *argv[])
+{
+    if (args != 3)
+    {
+        fprintf(stderr, "Usage %s src dest\n", argv[0], S_IRWXU);
+        exit(EXIT_FAILURE);
+    }
+    int outfd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC);
+    if (outfd == -1)
+    {
+        ERR_EXIT("open dest error");
+    }
+    int infd = open(argv[1], O_RDONLY);
+    if (infd == -1)
+    {
+        ERR_EXIT("open src error");
+    }
+    char buf[1024];
+    int nread;
+    while ((nread = read(infd, buf, 1024)) > 0)
+    {
+        write(outfd, buf, nread);
+    }
+    close(outfd);
+    close(infd);
+    return 0;
+}
 ```
+
+执行结果如下
+
+```bash
+$ ./a.out main.c test 
+$ ls -l
+total 56
+-rw-r--r--@ 1 cengke  staff  4520 May  5 15:33 README.md
+-rwxr-xr-x  1 cengke  staff  8880 May 19 20:19 a.out
+-rw-r--r--@ 1 cengke  staff   999 May 19 20:10 main.c
+-rw-------  1 cengke  staff   999 May 19 20:19 test
+```
+
+看到拷贝的文件和源文件一致
+
+#### `read`和`write`差别
+
+* `read`读过程中可能被某些信号中断
+* `read`读指定字节数返回大于0时表示已经从文件读到缓冲区中
+* `write`写指定字节数返回大于0时表示数据缓冲区已经拷贝到内核缓冲区,不代表同步到磁盘
+* 利用`fsync`可以即时将数据同步到磁盘
+* 利用给`open`设定一个参数`flags`值`0_SYNC`也可以即时将数据同步到磁盘,此时写文件会阻塞直到数据缓冲区写到物理磁盘
+
+## 文件随机读写
+
+Linux系统中有一个文件偏移的机制,将当前文件偏移值改变到有关位置,迫使`read`或`write`发生在这一位置
+
+### lseek
+
+通过指定相对于开始位置,当前位置或末尾位置的字节数来重定位curp,由`lseek`函数中指定的位置决定,声明是`off_t lseek(int fd, off_t offset, int base);`
+
+* fd文件描述符
+* offset偏移量
+* 搜索起始位置
+* 返回新的文件偏移值
+
+#### base表示搜索的起始位置
+
+
