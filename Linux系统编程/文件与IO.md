@@ -351,9 +351,10 @@ Linux系统中有一个文件偏移的机制,将当前文件偏移值改变到�
 #### base表示搜索的起始位置
 
 | base | 文件位置 |
-| :--- | :--- |
- |SEEK_SET|0 set file offset to offset|
- |SEEK_CUR|1 set file offset to current plus offset|
- |SEEK_END|2 set file offset to EOF plus offset|
+| :---: | :--- |
+| SEEK\_SET | 0 set file offset to offset |
+| SEEK\_CUR | 1 set file offset to current plus offset |
+| SEEK\_END | 2 set file offset to EOF plus offset |
+
 
 
