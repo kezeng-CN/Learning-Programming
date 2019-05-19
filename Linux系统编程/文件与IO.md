@@ -173,27 +173,25 @@ total 48
 
 | 打开方式 | 值 | 描述 |
 | :--- | :--- | :--- |
-|  |  |  |
-
-\| S\_IRWXU         \|0000700         \|\[XSI\] RWX mask for owner \|  
-\| S\_IRUSR         \|0000400         \|\[XSI\] R for owner _/  
-\| S\_IWUSR         \|0000200         \|\[XSI\] W for owner \|  
-\| S\_IXUSR         \|0000100         \|\[XSI\] X for owner \|  
-\| S\_IRWXG         \|0000070         \|\[XSI\] RWX mask for group \|  
-\| S\_IRGRP         \|0000040         \|\[XSI\] R for group _/  
-\| S\_IWGRP         \|0000020         \|\[XSI\] W for group \|  
-\| S\_IXGRP         \|0000010         \|\[XSI\] X for group \|  
-\| S\_IRWXO         \|0000007         \|\[XSI\] RWX mask for other \|  
-\| S\_IROTH         \|0000004         \|\[XSI\] R for other \*/  
-\| S\_IWOTH         \|0000002         \|\[XSI\] W for other \|  
-\| S\_IXOTH         \|0000001         \|\[XSI\] X for other \|  
-\| S\_ISUID         \|0004000         \|\[XSI\] set user id on execution \|  
-\| S\_ISGID         \|0002000         \|\[XSI\] set group id on execution \|  
-\| S\_ISVTX         \|0001000         \|\[XSI\] directory restrcted delete \|  
-\| S\_ISTXT         \|S\_ISVTX         \|sticky bit: not supported \|  
-\| S\_IREAD         \|S\_IRUSR         \|backward compatability \|  
-\| S\_IWRITE        \|S\_IWUSR         \|backward compatability \|  
-\| S\_IEXEC         \|S\_IXUSR         \|backward compatability \|
+| S\_IRWXU         |0000700         |\[XSI\] RWX mask for owner |  
+| S\_IRUSR         |0000400         |\[XSI\] R for owner _/  
+| S\_IWUSR         |0000200         |\[XSI\] W for owner |  
+| S\_IXUSR         |0000100         |\[XSI\] X for owner |  
+| S\_IRWXG         |0000070         |\[XSI\] RWX mask for group |  
+| S\_IRGRP         |0000040         |\[XSI\] R for group _/  
+| S\_IWGRP         |0000020         |\[XSI\] W for group |  
+| S\_IXGRP         |0000010         |\[XSI\] X for group |  
+| S\_IRWXO         |0000007         |\[XSI\] RWX mask for other |  
+| S\_IROTH         |0000004         |\[XSI\] R for other \*/  
+| S\_IWOTH         |0000002         |\[XSI\] W for other |  
+| S\_IXOTH         |0000001         |\[XSI\] X for other |  
+| S\_ISUID         |0004000         |\[XSI\] set user id on execution |  
+| S\_ISGID         |0002000         |\[XSI\] set group id on execution |  
+| S\_ISVTX         |0001000         |\[XSI\] directory restrcted delete |  
+| S\_ISTXT         |S\_ISVTX         |sticky bit: not supported |  
+| S\_IREAD         |S\_IRUSR         |backward compatability |  
+| S\_IWRITE        |S\_IWUSR         |backward compatability |  
+| S\_IEXEC         |S\_IXUSR         |backward compatability |
 
 ## 错误处理
 
