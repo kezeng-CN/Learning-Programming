@@ -77,19 +77,32 @@ hello world
 #include <sys/stat.h>  // open
 #include <sys/types.h> // open
 #include <unistd.h>    // I/O原语 read write close
+#define ERR_EXIT(m)         \
+    do                      \
+    {                       \
+        perror(m);          \
+        exit(EXIT_FAILURE); \
+    } while (0)
 int main(void)
 {
     int fd = open("test.txt", O_RDONLY);
     if (fd == -1)
     {
-        fprintf(stderr, "open error with errno=%d %s\n",
-                errno, strerror(errno));
-        exit(EXIT_FAILURE);
+        ERR_EXIT("open error");
     }
     printf("open succ\n");
     return 0;
 }
 ```
+
+执行结果如下
+
+```bash
+$ ./a.out 
+open error: No such file or directory
+```
+
+open第二参数
 
 ## 错误处理
 
