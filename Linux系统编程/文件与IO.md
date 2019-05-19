@@ -20,9 +20,13 @@
 * 对文件/设备的操作通过文件描述符
 * 文件描述符由系统返回,是打开/新建文件时返回的非负整数
 * 进程启动默认打开3个文件描述符
-    * STDIN_FILENO 0 // 标准输入
-    * STDOUT_FILENO 1 // 标准输出
-    * STDERR_FILENO 2 // 标准错误
+  * STDIN\_FILENO 0 // 标准输入
+  * STDOUT\_FILENO 1 // 标准输出
+  * STDERR\_FILENO 2 // 标准错误
+
+| 系统调用 | ANSI C |
+| :--- | :--- |
+|  |  |
 
 ## 错误处理
 
@@ -57,3 +61,6 @@ $ ./a.out
 close error: Bad file descriptor
 close error with msg:Bad file descriptor
 ```
+
+
+
