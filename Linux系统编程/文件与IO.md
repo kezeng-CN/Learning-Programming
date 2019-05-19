@@ -17,6 +17,13 @@
 
 ## FD文件描述符
 
+* 对文件/设备的操作通过文件描述符
+* 文件描述符由系统返回,是打开/新建文件时返回的非负整数
+* 进程启动默认打开3个文件描述符
+    * STDIN_FILENO 0 // 标准输入
+    * STDOUT_FILENO 1 // 标准输出
+    * STDERR_FILENO 2 // 标准错误
+
 ## 错误处理
 
 系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
@@ -50,5 +57,3 @@ $ ./a.out
 close error: Bad file descriptor
 close error with msg:Bad file descriptor
 ```
-
-## 
