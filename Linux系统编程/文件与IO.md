@@ -102,7 +102,7 @@ $ ./a.out
 open error: No such file or directory
 ```
 
-open第二参数定义在<fcntl.h>中
+open第二参数定义在`fcntl.h`中
 
 | 定义 | 值 | 操作 |
 | :--- | :--- | :--- |
