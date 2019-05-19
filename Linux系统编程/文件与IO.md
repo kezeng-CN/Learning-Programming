@@ -110,12 +110,18 @@ open第二参数
 | O\_WRONLY | 0x0001 | 仅写 |
 | O\_RDWR | 0x0002 | 可读写 |
 | O\_ACCMODE | 0x0003 | 访问模式 |
+| O\_APPEND | 0x0008 |  |
+| O\_CREAT | 0x0200 |  |
+| O\_EXCL | 0x0800 |  |
+| O\_TRUNC | 0x0400 |  |
 
-#define O_APPEND        0x0008          /* set append mode */
-#define O_CREAT         0x0200          /* create if nonexistant */
-#define O_EXCL          0x0800          /* error if already exists */
-#define O_TRUNC         0x0400          /* truncate to zero length */
+# define O\_APPEND        0x0008          /_ set append mode _/
 
+# define O\_CREAT         0x0200          /_ create if nonexistant _/
+
+# define O\_EXCL          0x0800          /_ error if already exists _/
+
+# define O\_TRUNC         0x0400          /_ truncate to zero length _/
 
 ## 错误处理
 
