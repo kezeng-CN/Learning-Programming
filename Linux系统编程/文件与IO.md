@@ -102,7 +102,7 @@ $ ./a.out
 open error: No such file or directory
 ```
 
-open第二参数
+open第二参数定义在<fcntl.h>中
 
 | 定义 | 值 | 操作 |
 | :--- | :--- | :--- |
@@ -115,13 +115,7 @@ open第二参数
 | O\_EXCL | 0x0800 | 已存在则报错 |
 | O\_TRUNC | 0x0400 | 清空文件 |
 
-# define O\_APPEND        0x0008          /_ set append mode _/
 
-# define O\_CREAT         0x0200          /_ create if nonexistant _/
-
-# define O\_EXCL          0x0800          /_ error if already exists _/
-
-# define O\_TRUNC         0x0400          /_ truncate to zero length _/
 
 ## 错误处理
 
