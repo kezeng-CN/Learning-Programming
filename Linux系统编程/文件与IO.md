@@ -26,7 +26,9 @@
 
 | 系统调用 | ANSI C |
 | :--- | :--- |
-|  |  |
+| STDIN\_FILENO | stdin |
+| STDOUT\_FILENO | stdout |
+| STDERR\_FILENO | stderror |
 
 ## 错误处理
 
