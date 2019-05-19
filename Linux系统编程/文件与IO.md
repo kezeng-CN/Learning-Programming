@@ -15,6 +15,40 @@
 * 系统调用I/O
 * 不带缓冲区
 
+## 错误处理
+
+系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
+
+```cpp
+#include <errno.h>
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+int main(void)
+{
+    int ret;
+    ret = close(10);
+    if (ret == -1)
+    {
+        // perror格式固定
+        perror("close error");
+        // fprintf可以自定义输出格式
+        fprintf(stderr, "close error with msg:%s\n",
+        // 头文件string.h中函数strerror将errno转成错误文本
+                strerror(errno));
+    }
+    return 0;
+}
+```
+
+运行结果如下
+
+```bash
+$ ./a.out 
+close error: Bad file descriptor
+close error with msg:Bad file descriptor
+```
+
 ## FD文件描述符
 
 * 对文件/设备的操作通过文件描述符
@@ -58,7 +92,11 @@ hello world
 
 ## 文件系统调用
 
-几种获得访问文件的文件描述符的方法
+* open获得访问文件的文件描述符
+* close释放文件描述符
+* create
+* read
+* write
 
 ### open
 
@@ -186,39 +224,44 @@ total 48
 | S\_IWOTH | 0000002 | \[XSI\] W for other |
 | S\_IXOTH | 0000001 | \[XSI\] X for other |
 
-## 错误处理
+### close
 
-系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
+利用`close`释放打开的文件描述符,函数原型`int close(int fd);`
+
+* fd要关闭的文件描述符
+* 错误返回-1成功返回0
+
+### create
+
+与早期UNIX系统的兼容
+
+### read
+
+通过O_RDONLY或O_RDWR打开的文件描述符可通过`read`读取字节,函数原型`ssize_t read(int fd, void *buf, size_t count);`
+
+* fd文件描述符
+* buf存放读出数据的指针
+* count复制到buf中的字节数
+* 错误返回-1读文件结束返回0未结束返回从文件到缓冲区中的字节数
+
+### write
+
+通过O_WRONLY或O_RDWR打开的文件描述符可通过`write`写入字节,函数原型`ssize_t write(int fd, const void *buf, size_t count);`
+
+* fd文件描述符
+* buf存放取出数据的指针
+* count需要写入文件的字节数
+* 错误返回-1成功返回写入到文件的字节数
+
+#### `size_t`和`ssize_t`
+
+* `size_t`是标准c库中定义类型,32位系统定义为`unsigned int`64位系统定义为`long unsigned int`
+* `ssize_t`执行读写操作的数据块大小,`typedef signed int size_t`
+
+### 简单的cp命令
+
+简单的拷贝
 
 ```cpp
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-int main(void)
-{
-    int ret;
-    ret = close(10);
-    if (ret == -1)
-    {
-        // perror格式固定
-        perror("close error");
-        // fprintf可以自定义输出格式
-        fprintf(stderr, "close error with msg:%s\n",
-        // 头文件string.h中函数strerror将errno转成错误文本
-                strerror(errno));
-    }
-    return 0;
-}
+
 ```
-
-运行结果如下
-
-```bash
-$ ./a.out 
-close error: Bad file descriptor
-close error with msg:Bad file descriptor
-```
-
-
-
