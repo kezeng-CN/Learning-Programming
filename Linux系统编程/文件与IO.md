@@ -18,13 +18,13 @@
 ## 错误处理
 
 系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`off_t lseek(int fd, off_t offset, int base);`是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
+
 * fd文件描述符
 * offset偏移量
 * 搜索起始位置
 * 返回新的文件偏移值
 
 #### base表示搜索的起始位置
-
 
 ```cpp
 #include <errno.h>
@@ -244,7 +244,7 @@ total 48
 
 ### read
 
-通过O_RDONLY或O_RDWR打开的文件描述符可通过`read`读取字节,函数原型`ssize_t read(int fd, void *buf, size_t count);`
+通过O\_RDONLY或O\_RDWR打开的文件描述符可通过`read`读取字节,函数原型`ssize_t read(int fd, void *buf, size_t count);`
 
 * fd文件描述符
 * buf存放读出数据的指针
@@ -253,7 +253,7 @@ total 48
 
 ### write
 
-通过O_WRONLY或O_RDWR打开的文件描述符可通过`write`写入字节,函数原型`ssize_t write(int fd, const void *buf, size_t count);`
+通过O\_WRONLY或O\_RDWR打开的文件描述符可通过`write`写入字节,函数原型`ssize_t write(int fd, const void *buf, size_t count);`
 
 * fd文件描述符
 * buf存放取出数据的指针
@@ -349,5 +349,10 @@ Linux系统中有一个文件偏移的机制,将当前文件偏移值改变到�
 * 返回新的文件偏移值
 
 #### base表示搜索的起始位置
+
+| base | 文件位置 |
+| :--- | :--- |
+|  |  |
+
 
 
