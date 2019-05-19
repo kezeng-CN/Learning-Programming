@@ -110,10 +110,10 @@ open第二参数
 | O\_WRONLY | 0x0001 | 仅写 |
 | O\_RDWR | 0x0002 | 可读写 |
 | O\_ACCMODE | 0x0003 | 访问模式 |
-| O\_APPEND | 0x0008 |  |
-| O\_CREAT | 0x0200 |  |
-| O\_EXCL | 0x0800 |  |
-| O\_TRUNC | 0x0400 |  |
+| O\_APPEND | 0x0008 | append模式 |
+| O\_CREAT | 0x0200 | 不存在则创建 |
+| O\_EXCL | 0x0800 | 已存在则报错 |
+| O\_TRUNC | 0x0400 | 清空文件 |
 
 # define O\_APPEND        0x0008          /_ set append mode _/
 
