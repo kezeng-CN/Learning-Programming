@@ -185,9 +185,6 @@ total 48
 | S\_IROTH | 0000004 | \[XSI\] R for other |
 | S\_IWOTH | 0000002 | \[XSI\] W for other |
 | S\_IXOTH | 0000001 | \[XSI\] X for other |
-| S\_ISUID | 0004000 | \[XSI\] set user id on execution |
-| S\_ISGID | 0002000 | \[XSI\] set group id on execution |
-| S\_ISVTX | 0001000 | \[XSI\] directory restrcted delete |
 
 ## 错误处理
 
