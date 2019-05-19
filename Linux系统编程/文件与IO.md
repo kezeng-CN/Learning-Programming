@@ -18,8 +18,8 @@ int main(void)
         // perror格式固定
         perror("close error");
         // fprintf可以自定义输出格式
-        // 头文件string.h中函数strerror将errno转成错误文本
         fprintf(stderr, "close error with msg:%s\n",
+        // 头文件string.h中函数strerror将errno转成错误文本
                 strerror(errno));
     }
     return 0;
@@ -33,3 +33,5 @@ $ ./a.out
 close error: Bad file descriptor
 close error with msg:Bad file descriptor
 ```
+
+## 
