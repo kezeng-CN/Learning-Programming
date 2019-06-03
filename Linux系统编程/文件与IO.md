@@ -17,7 +17,7 @@
 
 ## 错误处理
 
-系统变成中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`off_t lseek(int fd, off_t offset, int base);`是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
+系统编程中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
 
 * fd文件描述符
 * offset偏移量
@@ -465,6 +465,9 @@ $ od -c test
 0000052
 ```
 
-文件包含32字节空洞字符,没有被实际写入文件的所有字节由重复的`\0`表示,空洞是否占磁盘空间由文件系统(file system)决定
+文件包含32字节空洞字符,没有被实际写入文件的所有字节由重复的`\0`表示,空洞是否占磁盘空间由文件系统\(file system\)决定
 
 ## 目录访问
+
+
+
