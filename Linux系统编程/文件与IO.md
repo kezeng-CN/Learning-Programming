@@ -19,13 +19,6 @@
 
 系统编程中错误通常通过函数返回值表示,通过特殊变量errno来描述,这个全局变量在`<errno.h>`头文件中,声明是`extern int errno;`,对应的错误处理函数是`perror`和`strerror`
 
-* fd文件描述符
-* offset偏移量
-* 搜索起始位置
-* 返回新的文件偏移值
-
-#### base表示搜索的起始位置
-
 ```cpp
 #include <errno.h>
 #include <stdio.h>
