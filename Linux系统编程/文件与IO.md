@@ -100,9 +100,9 @@ hello world
 
 ### open
 
-#### open不带文件打开模式
+#### open不带权限参数
 
-#### 函数原型`int open(const char *path, int flags)`
+函数原型`int open(const char *path, int flags)`
 
 * path 文件名称,可以包括绝对/相对路径
 * flags 文件打开模式
@@ -155,7 +155,9 @@ open第二参数定义在`fcntl.h`中
 | O\_EXCL | 0x0800 | 已存在则报错 |
 | O\_TRUNC | 0x0400 | 清空文件 |
 
-#### 函数原型 `int open(const char *path, int flags, mode_t mode)`
+#### open带权限参数
+
+函数原型 `int open(const char *path, int flags, mode_t mode)`
 
 * path 文件名称,可以包括绝对/相对路径
 * flags 文件打开模式
@@ -463,6 +465,3 @@ $ od -c test
 文件包含32字节空洞字符,没有被实际写入文件的所有字节由重复的`\0`表示,空洞是否占磁盘空间由文件系统\(file system\)决定
 
 ## 目录访问
-
-
-
