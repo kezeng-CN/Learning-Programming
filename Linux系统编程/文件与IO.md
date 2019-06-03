@@ -100,6 +100,8 @@ hello world
 
 ### open
 
+#### open不带文件打开模式
+
 #### 函数原型`int open(const char *path, int flags)`
 
 * path 文件名称,可以包括绝对/相对路径
