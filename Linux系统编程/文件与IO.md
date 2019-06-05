@@ -5,12 +5,12 @@
 * 输入操作是设备到内存
 * 输出操作是内存到设备
 
-### 高级I/O
+## 高级I/O
 
 * ANSI提供的标准I/O库
 * 带缓冲区
 
-### 低级I/O
+## 低级I/O
 
 * 系统调用I/O
 * 不带缓冲区
@@ -44,7 +44,7 @@ int main(void)
 运行结果如下
 
 ```bash
-$ ./a.out 
+$ ./a.out
 close error: Bad file descriptor
 close error with msg:Bad file descriptor
 ```
@@ -68,7 +68,7 @@ ANSI C定义的是文件指针,系统调用的文件描述符是非负整数
 
 ### 文件描述符和文件指针的相互转换
 
-文件指针和文件描述符可以互相转换
+利用`fileno`将文件指针转换成文件描述符;利用`fdopen`将文件描述符转换成文件指针
 
 ```cpp
 #include <stdio.h>
@@ -85,7 +85,7 @@ int main(void)
 程序运行结果如下
 
 ```bash
-$ ./a.out 
+$ ./a.out
 fileno(stdout) = 1
 hello world
 ```
@@ -138,7 +138,7 @@ int main(void)
 执行结果如下
 
 ```bash
-$ ./a.out 
+$ ./a.out
 open error: No such file or directory
 ```
 
@@ -196,7 +196,7 @@ int main(void)
 执行结果如下
 
 ```bash
-$ ./a.out 
+$ ./a.out
 open succ
 $ ls -l
 total 48
@@ -313,7 +313,7 @@ int main(int args, char *argv[])
 执行结果如下
 
 ```bash
-$ ./a.out main.c test 
+$ ./a.out main.c test
 $ ls -l
 total 56
 -rw-r--r--@ 1 cengke  staff  4520 May  5 15:33 README.md
@@ -400,7 +400,7 @@ int main(int args, char *argv[])
 执行结果如下
 
 ```bash
-$ ./a.out 
+$ ./a.out
 buf=hello
 current offset=5
 ```
@@ -449,16 +449,16 @@ int main(int args, char *argv[])
 执行结果如下
 
 ```bash
-$ ./a.out 
+$ ./a.out
 $ ls -l
 total 56
 -rwxr-xr-x  1 cengke  staff  8648 May 19 21:13 a.out
 -rw-r--r--@ 1 cengke  staff   839 May 19 21:12 main.c
 -rw-r--r--  1 cengke  staff    42 May 19 21:13 test
-$ od -c test 
+$ od -c test
 0000000    h   e   l   l   o  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
 0000020   \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0  \0
-0000040   \0  \0  \0  \0  \0   w   o   r   l   d                        
+0000040   \0  \0  \0  \0  \0   w   o   r   l   d
 0000052
 ```
 
@@ -466,5 +466,70 @@ $ od -c test
 
 ## 目录访问
 
+### 打开目录
 
+函数原型`DIR *opendir(char *pathname);`
 
+* pathname 文件路径名
+* 执行成功返回一个目录指针,失败返回0
+
+### 访问指定目录中下一个链接的细节
+
+函数原型`struct dirent *readdir(DIR *dirptr);`
+
+* dirptr 目录指针
+* 执行成功返回一个指向dirent结构的指针,包含指定目录中下一个链接的细节,没有更多链接时返回0
+
+```cpp
+struct dirent
+{
+    long d_ino;                  // inode number
+    __off_t d_off;               // offset to this dirent
+    unsigned short int d_reclen; // length of this d_name
+    char d_name[256];            // filename (null-terminated)
+};
+```
+
+dirent核心结构中d_name代表文件名
+
+### 关闭一个已经打开的目录
+
+函数原型`int closedir(DIR *dirptr);`
+
+* 执行成功返回0,失败返回-1
+
+### ls命令
+
+```cpp
+#include <dirent.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define ERR_EXIT(m)         \
+    do                      \
+    {                       \
+        perror(m);          \
+        exit(EXIT_FAILURE); \
+    } while (0)
+int main(int args, char *argv[])
+{
+    char *pathname = ".";
+    if (args == 2)
+    {
+        pathname = argv[1];
+    }
+    DIR *dirptr = opendir(pathname);
+    struct dirent *entry = readdir(dirptr);
+    while ((entry = readdir(dirptr)) != NULL)
+    {
+        if ((strncmp(entry->d_name, ".", 1)) == 0)
+        {
+            continue;
+        }
+        printf("%s ", entry->d_name);
+    }
+    printf("\n");
+    return 0;
+}
+```
