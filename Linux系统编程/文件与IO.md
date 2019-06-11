@@ -92,8 +92,8 @@ hello world
 
 ## 文件系统调用
 
-* open获得访问文件的文件描述符
-* close释放文件描述符
+* open 获得访问文件的文件描述符
+* close 释放文件描述符
 * create
 * read
 * write
@@ -232,8 +232,8 @@ total 48
 
 利用`close`释放打开的文件描述符,函数原型`int close(int fd);`
 
-* fd要关闭的文件描述符
-* 错误返回-1成功返回0
+* fd 要关闭的文件描述符
+* 执行成功返回0,失败返回-1
 
 ### create
 
@@ -243,19 +243,19 @@ total 48
 
 通过O\_RDONLY或O\_RDWR打开的文件描述符可通过`read`读取字节,函数原型`ssize_t read(int fd, void *buf, size_t count);`
 
-* fd文件描述符
-* buf存放读出数据的指针
-* count复制到buf中的字节数
+* fd 文件描述符
+* buf 存放读出数据的指针
+* count 复制到buf中的字节数
 * 错误返回-1读文件结束返回0未结束返回从文件到缓冲区中的字节数
 
 ### write
 
 通过O\_WRONLY或O\_RDWR打开的文件描述符可通过`write`写入字节,函数原型`ssize_t write(int fd, const void *buf, size_t count);`
 
-* fd文件描述符
-* buf存放取出数据的指针
-* count需要写入文件的字节数
-* 错误返回-1成功返回写入到文件的字节数
+* fd 文件描述符
+* buf 存放取出数据的指针
+* count 需要写入文件的字节数
+* 执行成功返回写入到文件的字节数,失败返回-1
 
 #### `size_t`和`ssize_t`
 
@@ -338,11 +338,11 @@ Linux系统中有一个文件偏移的机制,将当前文件偏移值改变到�
 
 ### lseek
 
-通过指定相对于开始位置,当前位置或末尾位置的字节数来重定位curp,由`lseek`函数中指定的位置决定,声明是`off_t lseek(int fd, off_t offset, int base);`
+通过指定相对于开始位置,当前位置或末尾位置的字节数来重定位curp,由`lseek`函数中指定的位置决定,函数原型`off_t lseek(int fd, off_t offset, int base);`
 
-* fd文件描述符
-* offset偏移量
-* base搜索起始位置
+* fd 文件描述符
+* offset 偏移量
+* base 搜索起始位置
 * 返回新的文件偏移值
 
 base表示搜索的起始位置
@@ -534,4 +534,51 @@ int main(int args, char *argv[])
 }
 ```
 
-### 创建新目录
+### mkdir
+
+函数声明`int mkdir(char *pathname, mode_t mode);`
+
+* pathname 创建的文件路径名
+* mode 创建访问权限
+* 执行成功返回0,失败返回-1
+
+### rmdir
+
+函数声明`int rmdir(char *pathname);`
+
+* pathname 删除的文件路径名
+* 执行成功返回0,失败返回-1
+
+### chmod
+
+函数声明`int chmod(char *pathname, mode_t mode);`
+
+* pathname 文件路径名
+* mode 访问权限
+* 执行成功返回0,失败返回-1
+
+### fchmod
+
+函数声明`int fchmod(int fd, mode_t mode);`
+
+* fd 文件描述符
+* mode 访问权限
+* 执行成功返回0,失败返回-1
+
+### chown
+
+函数声明`int chown(int fd, uid_t owner, gid_t group);`
+
+* pathname 文件路径名
+* owner 所有者识别号
+* group 用户组识别号
+* 执行成功返回0,失败返回-1
+
+### fchown
+
+函数声明`int fchown(int fd, uid_t owner, gid_t group);`
+
+* fd 文件描述符
+* owner 所有者识别号
+* group 用户组识别号
+* 执行成功返回0,失败返回-1
