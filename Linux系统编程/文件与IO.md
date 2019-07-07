@@ -120,7 +120,70 @@ hello world
 
 ##### 两个文件描述符打开同一个文件
 
+```cpp
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#define ERR_EXIT(m)         \
+    do                      \
+    {                       \
+        perror(m);          \
+        exit(EXIT_FAILURE); \
+    } while (0)
+
+int main(int args, char *argv[])
+{
+    if (args != 2)
+    {
+        printf("usage: %s filename\n", argv[0]);
+        return 0;
+    }
+
+    char buff[1024];
+    int fd_RDONLY = open(argv[1], O_RDONLY);
+    if (fd_RDONLY == -1)
+    {
+        ERR_EXIT("file open error");
+    }
+    read(fd_RDONLY, buff, 5);
+    printf("%s\n", buff);
+
+    int fd_RDWR = open(argv[1], O_RDWR);
+    if (fd_RDWR == -1)
+    {
+        ERR_EXIT("file open error");
+    }
+    read(fd_RDWR, buff, 5);
+    printf("%s\n", buff);
+
+    write(fd_RDWR, "WRITE", 5);
+
+    memset(buff, 0x00, sizeof(buff));
+    read(fd_RDONLY, buff, 5);
+    printf("%s\n", buff);
+
+    close(fd_RDONLY);
+    close(fd_RDWR);
+
+    return 0;
+}
 ```
+
+执行结果如下
+
+```bash
+$ echo HelloWorld > test
+$ cat test
+HelloWorld
+$ ./a.out test
+Hello
+Hello
+WRITE
 ```
 
 ## 文件系统调用
