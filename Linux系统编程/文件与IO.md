@@ -60,10 +60,10 @@ close error with msg:Bad file descriptor
 
 ANSI C定义的是文件指针,系统调用的文件描述符是非负整数
 
-| 系统调用 | ANSI C |
-| :--- | :--- |
-| STDIN\_FILENO | stdin |
-| STDOUT\_FILENO | stdout |
+| 系统调用       | ANSI C   |
+| :------------- | :------- |
+| STDIN\_FILENO  | stdin    |
+| STDOUT\_FILENO | stdout   |
 | STDERR\_FILENO | stderror |
 
 ### 文件描述符和文件指针的相互转换
@@ -88,6 +88,39 @@ int main(void)
 $ ./a.out
 fileno(stdout) = 1
 hello world
+```
+
+### 系统内核表示打开文件描述符
+
+* 文件描述符表
+* 文件表
+* v节点表
+
+待补充
+
+#### 文件描述符表
+
+进程启动默认打开3个文件描述符,用户打开的文件描述符从3开始
+
+#### 文件表
+
+| 文件表                   | 说明                             |
+| :----------------------- | :------------------------------- |
+| 文件状态标志             | 读,写,追加,同步,非阻塞...        |
+| 当前文件偏移量           | lseek随机读写利用该文件偏移量    |
+| 文件被文件描述符指向数量 | 复制文件描述符                   |
+| v指针指向v节点表         | v节点表(一个文件仅有一个v节点表) |
+
+#### v节点表
+
+| v节点表   | 说明                                             |
+| :-------- | :----------------------------------------------- |
+| v节点信息 | stat读取文件元数据                               |
+| i节点信息 | inode no和device id(文件打开时复制到v节点信息中) |
+
+##### 两个文件描述符打开同一个文件
+
+```
 ```
 
 ## 文件系统调用
@@ -144,16 +177,16 @@ open error: No such file or directory
 
 open第二参数定义在`fcntl.h`中
 
-| 定义 | 值 | 操作 |
-| :--- | :--- | :--- |
-| O\_RDONLY | 0x0000 | 仅读 |
-| O\_WRONLY | 0x0001 | 仅写 |
-| O\_RDWR | 0x0002 | 可读写 |
-| O\_ACCMODE | 0x0003 | 访问模式 |
-| O\_APPEND | 0x0008 | append模式 |
-| O\_CREAT | 0x0200 | 不存在则创建 |
-| O\_EXCL | 0x0800 | 已存在则报错 |
-| O\_TRUNC | 0x0400 | 清空文件 |
+| 定义       | 值     | 操作         |
+| :--------- | :----- | :----------- |
+| O\_RDONLY  | 0x0000 | 仅读         |
+| O\_WRONLY  | 0x0001 | 仅写         |
+| O\_RDWR    | 0x0002 | 可读写       |
+| O\_ACCMODE | 0x0003 | 访问模式     |
+| O\_APPEND  | 0x0008 | append模式   |
+| O\_CREAT   | 0x0200 | 不存在则创建 |
+| O\_EXCL    | 0x0800 | 已存在则报错 |
+| O\_TRUNC   | 0x0400 | 清空文件     |
 
 #### open带权限参数
 
@@ -213,20 +246,20 @@ total 48
 
 最开始的权限由文件创建掩码决定,每次注册进入系统umask命令都被执行并自动设置掩码改变默认值,新的权限会把旧的覆盖
 
-| 打开方式 | 值 | 描述 |
-| :--- | :--- | :--- |
+| 打开方式 | 值      | 描述                       |
+| :------- | :------ | :------------------------- |
 | S\_IRWXU | 0000700 | \[XSI\] RWX mask for owner |
-| S\_IRUSR | 0000400 | \[XSI\] R for owner |
-| S\_IWUSR | 0000200 | \[XSI\] W for owner |
-| S\_IXUSR | 0000100 | \[XSI\] X for owner |
+| S\_IRUSR | 0000400 | \[XSI\] R for owner        |
+| S\_IWUSR | 0000200 | \[XSI\] W for owner        |
+| S\_IXUSR | 0000100 | \[XSI\] X for owner        |
 | S\_IRWXG | 0000070 | \[XSI\] RWX mask for group |
-| S\_IRGRP | 0000040 | \[XSI\] R for group |
-| S\_IWGRP | 0000020 | \[XSI\] W for group |
-| S\_IXGRP | 0000010 | \[XSI\] X for group |
+| S\_IRGRP | 0000040 | \[XSI\] R for group        |
+| S\_IWGRP | 0000020 | \[XSI\] W for group        |
+| S\_IXGRP | 0000010 | \[XSI\] X for group        |
 | S\_IRWXO | 0000007 | \[XSI\] RWX mask for other |
-| S\_IROTH | 0000004 | \[XSI\] R for other |
-| S\_IWOTH | 0000002 | \[XSI\] W for other |
-| S\_IXOTH | 0000001 | \[XSI\] X for other |
+| S\_IROTH | 0000004 | \[XSI\] R for other        |
+| S\_IWOTH | 0000002 | \[XSI\] W for other        |
+| S\_IXOTH | 0000001 | \[XSI\] X for other        |
 
 ### close
 
@@ -347,11 +380,11 @@ Linux系统中有一个文件偏移的机制,将当前文件偏移值改变到�
 
 base表示搜索的起始位置
 
-| base | 文件位置 |
-| :--- | :--- |
-| SEEK\_SET | 0 set file offset to offset |
+| base      | 文件位置                                 |
+| :-------- | :--------------------------------------- |
+| SEEK\_SET | 0 set file offset to offset              |
 | SEEK\_CUR | 1 set file offset to current plus offset |
-| SEEK\_END | 2 set file offset to EOF plus offset |
+| SEEK\_END | 2 set file offset to EOF plus offset     |
 
 `lseek`对应于c语言的`fseek`返回当前偏移量
 
@@ -582,3 +615,5 @@ int main(int args, char *argv[])
 * owner 所有者识别号
 * group 用户组识别号
 * 执行成功返回0,失败返回-1
+
+### stat
